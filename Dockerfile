@@ -3,8 +3,11 @@ FROM maven:3.9.4-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# Copia el código fuente y archivos de configuración
+# Copia el código fuente y archivos de configuración y descarga dependencias
 COPY pom.xml .
+
+RUN mvn dependency:go-offline
+
 COPY src ./src
 
 # Compila y genera el .jar
