@@ -4,7 +4,7 @@ namespace: otsugua04-dev
 
 container:
   tag: "build-{{ tag }}"
-  port: 3000
+  port: 8080
   image: "otsugua04/servicio-bdd"
   replicas: 2
   cpuRequests: "500m"
