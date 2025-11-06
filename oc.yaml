@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicio-bdd-deployment
+  namespace: otsugua04-dev
+  labels:
+    app: servicio-bdd
+    areanegocio: tecnologia
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: servicio-bdd
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: servicio-bdd
+    spec:
+      containers:
+      - name: principal-container
+        image: otsugua04/servicio-bdd:build-{{ tag }}
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 800m
+            memory: 1500Mi
+        envFrom:
+            - configMapRef:
+                name: servicio-bdd-configmap
+            - secretRef:
+                name: servicio-bdd-secret
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 8080
+          failureThreshold: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 8080
+          failureThreshold: 5
+          initialDelaySeconds: 0
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 5
+          initialDelaySeconds: 0
+          periodSeconds: 10
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicio-bdd-service
+  namespace: otsugua04-dev
+spec:
+  selector:
+    app: servicio-bdd
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: servicio-bdd-configmap
+  namespace: otsugua04-dev
+data:
+    DATABASE: "192.168.1.1"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: servicio-bdd-secret
+  namespace: otsugua04-dev
+type: Opaque
+data:
+    PASSWORD: cGFzc3dvcmRwcnVlYmE=
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mi-hpa
+  namespace: otsugua04-dev
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: deployment
+    name: servicio-bdd-service
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 100
