@@ -3,7 +3,7 @@ package com.otsuguasoft.serviciobdd.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "documentos")
+@Table(name = "tbdd_informacion")
 public class Informacion {
 
     @Id
