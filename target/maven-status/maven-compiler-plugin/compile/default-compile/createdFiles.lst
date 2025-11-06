@@ -1,0 +1,4 @@
+com\otsuguasoft\serviciobdd\controller\InformacionController.class
+com\otsuguasoft\serviciobdd\model\Informacion.class
+com\otsuguasoft\serviciobdd\repository\InformacionRepository.class
+com\otsuguasoft\ServicioBddApplication.class
