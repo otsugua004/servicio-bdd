@@ -24,7 +24,7 @@ hpa:
 
 configmap:
   db_host: "postgres.otsugua04-dev.svc.cluster.local"
-  db_port: "5432"
+  db_port: 5432
   db_name: "mi_basedatos"
 
 secret:
