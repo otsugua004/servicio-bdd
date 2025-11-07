@@ -15,6 +15,10 @@ public class Informacion {
     public Informacion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public Informacion() {
+    }
+
     // Getters y setters
 
     public Long getId() {
