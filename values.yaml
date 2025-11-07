@@ -23,8 +23,11 @@ hpa:
   targetCPUUtilizationPercentage: 75
 
 configmap:
-  database: "192.168.1.1"
+  db_host: "postgres.otsugua04-dev.svc.cluster.local"
+  db_port: "5432"
+  db_name: "mi_basedatos"
 
 secret:
   # plain text password; template will base64-encode when placing into `data:`
-  password: "hola"
+  db_username: "admin"
+  db_password: "password"
