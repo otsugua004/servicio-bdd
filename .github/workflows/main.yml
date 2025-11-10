@@ -71,5 +71,5 @@ jobs:
       - name: Deploy files
         run: |
           oc project otsugua04-dev
-          helm show chart oci://registry-1.docker.io/otsugua04/servicio-chart --version 14
-          helm upgrade --install servicio-bdd oci://registry-1.docker.io/otsugua04/servicio-chart --version 14 --values values.yaml
+          helm show chart oci://registry-1.docker.io/otsugua04/servicio-chart --version 15
+          helm upgrade --install servicio-bdd oci://registry-1.docker.io/otsugua04/servicio-chart --version 15 --values values.yaml
